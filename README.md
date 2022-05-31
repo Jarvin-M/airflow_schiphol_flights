@@ -1,6 +1,7 @@
 # Apache Airflow
 [Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/index.html) is an open source tool for workflow orchestration of complex data pipelines by enforcing correct order of execution and allocation of resources.
 Airflow operates under four principles:
+
 * **Dynamic** - Configuration as code to allow dynamic/automatic pipeline generation
 * **Extensible** - Flexibility to extend the library to suit environment
 * **Elegant** - lean and explicit pipelines using the [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) templating engine
@@ -34,6 +35,7 @@ Data between dependent tasks can be passed via: [Xcoms](https://airflow.apache.o
 
 ### When to use Airflow
 Powerful in orchestrating dynamic and time interval/schedule based workflows for the following example usecases:
+
 * ETL data pipelines
 * Machine learning workflow
 * Automated reporting
