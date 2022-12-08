@@ -23,10 +23,10 @@ Airflow has an intergrated user interface to monitor and manage these workflows.
 
 ## Why use Airflow?
 
+* **Workflow as code**: reproducibility, version control and maintability
 * **Open-source**: Lower cost, innovation, and community support come with open-source
 * **Widely Integrated**: Can be used with multiple cloud providers and other tools like databases -> List of all [Airlfow plugins/operators](https://registry.astronomer.io/modules?page=1&types=Operators)
 * **User interface**: Airflow UI allows users to monitor and troubleshoot pipelines with ease
-* **Programmatic approach**: reproducibility, version control and maintability
 * **Automation**: easy of scheduling and orchestration. e,g Airflow has it built-in retry mechanism for fault tolerance
 * **Alerting**: Continous monitoring for success or failure of tasks
 * **Traceability**: Trace lineage of execution of tasks
