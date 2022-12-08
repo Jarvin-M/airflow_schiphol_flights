@@ -2,30 +2,11 @@
 
 # Apache Airflow
 [Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/index.html) is an open source tool for workflow orchestration of complex data pipelines by enforcing correct order of execution and allocation of resources.
-Airflow operates under four principles:
 
-* **Dynamic** - Configuration as code to allow dynamic/automatic pipeline generation
-* **Extensible** - Flexibility to extend the library to suit environment
-* **Elegant** - lean and explicit pipelines using the [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) templating engine
-* **Scalable** - Modular architecture that uses a message queue for easy scaling
-
-
-
-Airflow has an intergrated user interface to monitor and manage these workflows. Workflows are represented as Directed Acyclic Graphs(DAGs) and work to be done as Tasks which are ordered based on dependency.
-
+## Key Concepts
 Basic illustration of a DAG:
 
 ![Basic DAG](images/basic-dag.png)
-
-
-## Architectural Components
-![scenario_3.png](images/arch-airflow.png)
-
-1. **Scheduler** - triggers scheduled worfklows and submits tasks to executor
-2. **Executor** - runs submitted tasks
-3. **Web Server** - user interface for inspecting, trigger and debugging DAGs and tasks
-4. **DAG Directory** - folder with code definition of DAGs and tasks
-5. **Metadata database** - stores state of scheduler, executor and webserver
 
 A DAG has 3 types of Tasks:
 
@@ -37,7 +18,10 @@ Dependencies between tasks can then be declated with either  `>>` and  `<<` oper
 
 Data between dependent tasks can be passed via: [Xcoms](https://airflow.apache.org/docs/apache-airflow/stable/concepts/xcoms.html) (Cross-communications) or External cloud storage service.
 
-### Why use Airflow?
+
+Airflow has an intergrated user interface to monitor and manage these workflows. Workflows are represented as Directed Acyclic Graphs(DAGs) and work to be done as Tasks which are ordered based on dependency.
+
+## Why use Airflow?
 
 * **Open-source**: Lower cost, innovation, and community support come with open-source
 * **Widely Integrated**: Can be used with multiple cloud providers and other tools like databases -> List of all [Airlfow plugins/operators](https://registry.astronomer.io/modules?page=1&types=Operators)
@@ -46,6 +30,19 @@ Data between dependent tasks can be passed via: [Xcoms](https://airflow.apache.o
 * **Automation**: easy of scheduling and orchestration. e,g Airflow has it built-in retry mechanism for fault tolerance
 * **Alerting**: Continous monitoring for success or failure of tasks
 * **Traceability**: Trace lineage of execution of tasks
+
+## Architectural Components
+![scenario_3.png](images/arch-airflow.png)
+
+1. **Scheduler** - triggers scheduled worfklows and submits tasks to executor
+2. **Executor** - runs submitted tasks
+3. **Web Server** - user interface for inspecting, trigger and debugging DAGs and tasks
+4. **DAG Directory** - folder with code definition of DAGs and tasks
+5. **Metadata database** - stores state of scheduler, executor and webserver
+
+
+
+
 
 
 ## Getting Started
