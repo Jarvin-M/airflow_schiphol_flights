@@ -1,4 +1,4 @@
-[[_TOC_]]
+[TOC]
 
 # Apache Airflow
 [Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/index.html) is an open source tool for workflow orchestration of complex data pipelines by enforcing correct order of execution and allocation of resources.
