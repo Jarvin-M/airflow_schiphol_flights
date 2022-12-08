@@ -47,18 +47,6 @@ Data between dependent tasks can be passed via: [Xcoms](https://airflow.apache.o
 * **Alerting**: Continous monitoring for success or failure of tasks
 * **Traceability**: Trace lineage of execution of tasks
 
-### When to use Airflow
-Powerful in orchestrating dynamic and time interval/schedule based workflows for the following example usecases:
-
-* ETL data pipelines(utilize intermediate data stores for different tasks/stages)
-* Machine learning workflow
-* Automated reporting
-* Backups and DevOps tasks
-
-### When not to use Airflow
-
-* Realtime streaming pipelines - since airflow is schedule based, it is not appropriate for continous realtime events
-* 
 
 ## Getting Started
 
@@ -73,12 +61,28 @@ For detailed steps; refer to Airflow documentation [here](https://airflow.apache
 
 1. Install Docker Desktop Community Edition. Docker-compose is already installed in Docker Desktop for both Mac and Windows users, hence, no need to install it separately.
 2. docker-compose.yaml with preconfigured required service definitions including the scheduler, webserverm worker, initialization, flower(for monitoring), postgres database and redis broker
-3. 
+3. Initialize the database
+4. Run airflow to start all services
+
+### When to use Airflow
+Powerful in orchestrating dynamic and time interval/schedule based workflows for the following example usecases:
+
+* ETL data pipelines(utilize intermediate data stores for different tasks/stages)
+* Machine learning workflow
+* Automated reporting
+* Backups and DevOps tasks
+
+### When not to use Airflow
+
+* Realtime streaming pipelines - since airflow is schedule based, it is not appropriate for continous realtime events
+* Limited knowledge of Python
+* Sharing big data from one task to the next
 
 
 ## Next Steps
 1. Collaborate with the Snowflake - use in Snowflake in Airflow
 2. Comparison with different - Kafka, Luigi, AWS Step Functions, Azure Data Factory, Databricks Workflows
+3. Enrich the pipeline with more various operators
 
 ## Outcomes
 1. Repository with Airflow usage example
