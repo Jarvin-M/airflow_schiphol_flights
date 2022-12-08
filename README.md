@@ -29,7 +29,7 @@ Airflow has an intergrated user interface to monitor and manage these workflows.
 * **User interface**: Airflow UI allows users to monitor and troubleshoot pipelines with ease
 * **Automation**: easy of scheduling and orchestration. e,g Airflow has it built-in retry mechanism for fault tolerance
 * **Alerting**: Continous monitoring for success or failure of tasks
-* **Traceability**: Trace lineage of execution of tasks
+
 
 ## Architectural Components
 ![scenario_3.png](images/arch-airflow.png)
