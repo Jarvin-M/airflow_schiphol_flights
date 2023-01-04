@@ -7,7 +7,7 @@ from airflow.decorators import task
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.operators.python import PythonOperator
 from airflow.operators.check_operator import ValueCheckOperator
-from scripts.etl import etl
+from scripts.flights_etl import etl
 
 ENV_ID = os.environ.get("SYSTEM_TESTS_ENV_ID")
 DAG_ID = "weather_etl"
