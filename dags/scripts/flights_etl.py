@@ -47,33 +47,22 @@ def get_todays_flights():
 def etl():
     flights_dict = get_todays_flights()
     df_flights = pd.DataFrame(flights_dict["flights"])
+    
+    # Select columns
+    df_flights = df_flights[["route", "actualOffBlockTime", "publicEstimatedOffBlockTime"]]
 
-    # df_weather_selected = df_weather[["plaats", "temp", "d1tmax", "d1tmin"]]
-    # df_weather_selected.columns = [
-    #     "city",
-    #     "current_temperature",
-    #     "tomorrow_max_temperature",
-    #     "tomorrow_minimum_temperature",
-    # ]
-    # df_weather_selected[
-    #     [
-    #         "current_temperature",
-    #         "tomorrow_max_temperature",
-    #         "tomorrow_minimum_temperature",
-    #     ]
-    # ] = df_weather_selected[
-    #     [
-    #         "current_temperature",
-    #         "tomorrow_max_temperature",
-    #         "tomorrow_minimum_temperature",
-    #     ]
-    # ].astype(
-    #     np.float64
-    # )
-    # df_weather_selected["current_temperature_fahrenheit"] = (
-    #     df_weather_selected["current_temperature"].astype(np.float64) * 9 / 5 + 32
-    # )
+    # Normalize the 'route' column
+    df_flights = df_flights.join(pd.json_normalize(df_flights['route'])).drop('route', axis='columns')
 
+    # Drop nulls
+    df_flights = df_flights[~df_flights['publicEstimatedOffBlockTime'].isnull()]
+
+    # Drop brackets in the column "destinations"
+    df_flights['destinations'] = df_flights['destinations'].str[0]
+
+    # Drop duplicates
+    df_flights = df_flights.drop_duplicates().reset_index(drop=True)
+    
     conn_string = (
         "postgresql+psycopg2://airflow:airflow@host.docker.internal:5961/airflow"
     )
@@ -81,4 +70,4 @@ def etl():
     conn = db.connect()
 
     # our dataframe
-    df_weather_selected.to_sql("weather", db, if_exists="replace")
+    df_flights.to_sql("flights", db, if_exists="replace")
