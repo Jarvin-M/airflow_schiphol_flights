@@ -59,6 +59,16 @@ x-airflow-common:
     AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+    # SMTP variables
+    AIRFLOW__SMTP__SMTP_HOST: 'smtp.gmail.com'
+    AIRFLOW__SMTP__SMTP_STARTTLS: 'false'
+    AIRFLOW__SMTP__SMTP_SSL: 'true'
+    AIRFLOW__SMTP__SMTP_USER: 'jarvinm194@gmail.com'
+    # have to generate an app password for this to work
+    # https://support.google.com/mail/answer/185833?hl=en-GB
+    AIRFLOW__SMTP__SMTP_PASSWORD: '<fill-in>' 
+    AIRFLOW__SMTP__SMTP_PORT: 465
+    AIRFLOW__SMTP__SMTP_MAIL_FROM: 'jarvinm194@gmail.com'
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
