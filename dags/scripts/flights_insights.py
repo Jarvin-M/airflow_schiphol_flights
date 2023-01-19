@@ -16,6 +16,6 @@ def get_insights():
 
     df_flights = pd.read_sql_query('select * from "flights"',con=db)
     df_delays = df_flights.groupby(['ingestion_timestamp'])['delayed_status'].sum().reset_index()
-    delay_json = df_delays.to_json()
+    delay_json = df_delays.astype(str).to_json()
     return delay_json
 
