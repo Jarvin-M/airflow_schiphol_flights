@@ -8,6 +8,7 @@ from airflow.providers.postgres.operators.postgres import PostgresOperator
 from airflow.operators.python import PythonOperator
 from airflow.operators.check_operator import ValueCheckOperator
 from scripts.flights_utils import etl
+from scripts.flights_insights import get_insights
 from airflow.operators.email_operator import EmailOperator
 
 ENV_ID = os.environ.get("SYSTEM_TESTS_ENV_ID")
@@ -17,7 +18,6 @@ default_args = {
     "retries": 1,
     "retry_delay": timedelta(minutes=5),
 }
-
 
 with DAG(
     dag_id=DAG_ID,
@@ -33,12 +33,15 @@ with DAG(
         task_id="create_flights_table",
         sql="""
                 CREATE TABLE IF NOT EXISTS flights (
-                id SERIAL PRIMARY KEY,
-                city text,
-                current_temperature numeric,
-                tomorrow_max_temperature numeric,
-                tomorrow_min_temperature numeric,
-                current_temperature_fahrenheit numeric);
+                "actualOffBlockTime" timestamptz NULL,
+                "publicEstimatedOffBlockTime" timestamptz NULL,
+                destinations text NULL,
+                eu text NULL,
+                visa bool NULL,
+                delayed_minutes float8 NULL,
+                delayed_status bool NULL,
+                ingestion_timestamp timestamp NULL);
+                
             """,
     )
 
@@ -46,19 +49,21 @@ with DAG(
     # https://airflow.apache.org/docs/apache-airflow/stable/howto/operator/python.html#
     process_data = PythonOperator(task_id="etl", python_callable=etl)
 
-    check_city_count = ValueCheckOperator(
-        task_id="check_city_count",
-        sql="SELECT COUNT(DISTINCT(city)) FROM weather",
-        pass_value=1,
-        conn_id="postgres_default",
-    )
+    # check_city_count = ValueCheckOperator(
+    #     task_id="check_city_count",
+    #     sql="SELECT COUNT(DISTINCT(city)) FROM weather",
+    #     pass_value=1,
+    #     conn_id="postgres_default",
+    # )
+
+    retrieve_insights = PythonOperator(task_id="insights", python_callable=get_insights, do_xcom_push=True)
 
     #TODO: extract and add the summary insights to the html content
     send_insights_email = EmailOperator(
         task_id="send_email",
         to="jmutatiina@deloitte.nl",
         subject="Summary: Schiphol Flight Delay insights {{ ds }}",
-        html_content="Date: {{ ds }}",
+        html_content="<b><h1> {{ task_instance.xcom_pull(task_ids='insights') }} </h1></b>",
     )
 
-    send_insights_email
+    create_flights_table>>process_data>>retrieve_insights>>send_insights_email
