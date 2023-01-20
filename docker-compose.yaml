@@ -48,6 +48,7 @@ x-airflow-common:
   build: .
   environment:
     &airflow-common-env
+    AIRFLOW_CONN_POSTGRES_DEFAULT: postgres://airflow:airflow@host.docker.internal:5961/airflow
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     # For backward compatibility, with Airflow <2.3
@@ -56,7 +57,7 @@ x-airflow-common:
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
-    AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
     # SMTP variables
@@ -66,7 +67,7 @@ x-airflow-common:
     AIRFLOW__SMTP__SMTP_USER: 'jarvinm194@gmail.com'
     # have to generate an app password for this to work
     # https://support.google.com/mail/answer/185833?hl=en-GB
-    AIRFLOW__SMTP__SMTP_PASSWORD: '<fill-in>' 
+    AIRFLOW__SMTP__SMTP_PASSWORD: 'volxnscaanvigmkt' 
     AIRFLOW__SMTP__SMTP_PORT: 465
     AIRFLOW__SMTP__SMTP_MAIL_FROM: 'jarvinm194@gmail.com'
   volumes:

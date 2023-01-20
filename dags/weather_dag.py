@@ -9,8 +9,7 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.check_operator import ValueCheckOperator
 from scripts.weather_utils import etl
 
-ENV_ID = os.environ.get("SYSTEM_TESTS_ENV_ID")
-DAG_ID = "weather_etl"
+DAG_ID = "weather_dag"
 default_args = {
     "depends_on_past": False,
     "retries": 1,
