@@ -18,8 +18,8 @@ PARAMS = {
 }
 # TODO: store headers as secrets
 HEADERS = {
-    "app_id": "d4d55a09",
-    "app_key": "ec5d34f4372b9a44fe6b3da9574396f7",
+    "app_id": "<api-id>",
+    "app_key": "<api-key>",
     "ResourceVersion": "v4",
     "Accept": "application/json",
 }

@@ -19,7 +19,7 @@ with DAG(
     dag_id=DAG_ID,
     default_args=default_args,
     start_date=datetime(2022, 11, 1),
-    schedule_interval="@once",  # Daily interval at 23:00 "0 23 * * *"
+    schedule_interval="0 23 * * *",  # Daily interval at 23:00 
     catchup=False,
     tags=[
         "Orchestration",

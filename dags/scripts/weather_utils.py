@@ -9,7 +9,7 @@ import numpy as np
 def _get_current_weather():
     # Package the request, send the request and catch the response: r
     request_url = (
-        "http://weerlive.nl/api/json-data-10min.php?key=d207adc652&locatie=Amsterdam"
+        "http://weerlive.nl/api/json-data-10min.php?key=<api-key>&locatie=Amsterdam"
     )
 
     parameters = {"t": "Current weather in Amsterdam"}

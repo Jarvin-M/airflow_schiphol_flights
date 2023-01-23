@@ -1,7 +1,7 @@
 [TOC]
 
 # Apache Airflow
-[Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/index.html) is an open-source platform for developing, scheduling, and monitoring batch-oriented workflows. Airflow’s extensible Python framework enables you to build workflows connecting with virtually any technology. A web interface helps manage the state of your workflows.
+[Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/index.html) is an open-source platform for developing, scheduling, and monitoring batch-oriented workflows. Airflowï¿½s extensible Python framework enables you to build workflows connecting with virtually any technology. A web interface helps manage the state of your workflows.
 
 ## Key Concepts
 Basic illustration of a DAG:
@@ -73,19 +73,6 @@ Powerful in orchestrating dynamic and time interval/schedule based workflows for
 
 * Realtime streaming pipelines - since airflow is schedule based, it is not appropriate for continous realtime events
 * Limited knowledge of Python
-
-
-## Next Steps
-1. Collaborate with the Snowflake - use in Snowflake in Airflow
-2. Comparison with different - Kafka, Luigi, AWS Step Functions, Azure Data Factory, Databricks Workflows
-3. Enrich the pipeline with more various operators
-
-## Outcomes
-1. Repository with Airflow usage example
-2. Presentation in MLECC - feedback to iterate on the package
-2. MLECC Learn & Share - wider audience - AI&D + cloud engineering
-3. Wiki 
-3. Blog *
 
 
 ## Resources
