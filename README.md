@@ -45,21 +45,6 @@ Airflow has an intergrated user interface to monitor and manage these workflows.
 
 
 
-## Getting Started
-
-### Folder structure
-
-### Run Airflow in Docker (Simplified steps)
-For detailed steps; refer to Airflow documentation [here](https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html)
-<!-- <div class=\"alert alert-block alert-danger\">
-    <b>Important:</b> Before beginning, set up your environment correctly as instructed in `Readme.md`
-    This example set-up should not be used for production
-</div> -->
-
-1. Install Docker Desktop Community Edition. Docker-compose is already installed in Docker Desktop for both Mac and Windows users, hence, no need to install it separately.
-2. docker-compose.yaml with preconfigured required service definitions including the scheduler, webserverm worker, initialization, flower(for monitoring), postgres database and redis broker
-3. Initialize the database
-4. Run airflow to start all services
 
 ### When to use Airflow
 Powerful in orchestrating dynamic and time interval/schedule based workflows for the following example usecases:
@@ -78,3 +63,78 @@ Powerful in orchestrating dynamic and time interval/schedule based workflows for
 ## Resources
 1. https://www.contino.io/insights/apache-airflow
 
+
+## Getting Started
+![](images/flights_dag.png)
+### 1. Setup Airflow to run on Docker (Simplified steps)
+For detailed steps on running Airflow on Docker; refer to Airflow documentation [here](https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html)
+
+1. Install Docker Desktop Community Edition. Docker-compose is already installed in Docker Desktop for both Mac and Windows users, hence, no need to install it separately.
+2. docker-compose.yaml with preconfigured required service definitions including the scheduler, webserver, worker, initialization, flower(for monitoring), postgres database and redis broker
+`curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.5.1/docker-compose.yaml'`
+    * The generic Airflow architecture docker-compose is tailored to cater for the following:
+        1. Additional Postgres Database for our usecase -  `curated-postgres`, additional port mapping is done to avoid port conflict with the default airflow postgres database
+        ```docker
+         curated-postgres:
+            image: postgres:13
+            ports:
+            - "5961:5432"
+        ```
+        2. Connection ID for the curated Postgres database is needed to grant Airflow access to this database. More about managing connections -> [here](https://airflow.apache.org/docs/apache-airflow/stable/howto/connection.html#managing-connections)
+        ```
+        AIRFLOW_CONN_POSTGRES_DEFAULT: postgres://airflow:airflow@host.docker.internal:5961/airflow
+        ```
+
+        2. Set up SMTP server via docker environment variables. In this example we utilise the gmail smtp server via setting a [google app login token](https://support.google.com/mail/answer/185833?hl=en-GB). Other options are [SendGrid](https://airflow.apache.org/docs/apache-airflow/stable/howto/email-config.html#send-email-using-sendgrid) and AWS SES
+        ```docker
+        AIRFLOW__SMTP__SMTP_HOST: 'smtp.gmail.com'
+        AIRFLOW__SMTP__SMTP_STARTTLS: 'false'
+        AIRFLOW__SMTP__SMTP_SSL: 'true'
+        AIRFLOW__SMTP__SMTP_USER: '<your-email>'
+        AIRFLOW__SMTP__SMTP_PASSWORD: '<google-app-token>' 
+        AIRFLOW__SMTP__SMTP_PORT: 465
+        AIRFLOW__SMTP__SMTP_MAIL_FROM: '<your-email>
+        ```
+        3. Connection ID for cura
+3. The docker-compose mounts and synchronize directories between your computer and docker container. We create these directories
+    ```
+    mkdir -p ./dags ./logs ./plugins```
+4. Initialize database to create the first user account based on the logins specified in the `docker-compose.yaml`
+```
+docker compose up airflow-init
+```
+5. For subsequent runs you can start and clean up all services as below
+    ```docker
+        #start
+        docker compose up
+
+        # clean up 
+        docker compose down --volumes --remove-orphans
+    ```
+
+### 2. Flights API Taskflow
+To orchestrate the usecase described above, we define an airflow taskflow as a DAG with operators that perform a unit of work.
+
+https://gist.github.com/Jarvin-M/cc1035db315121483d34bfc545b1e55f
+
+1. DAG declaration.
+A context manager is used, with which the DAG definition is added implicitly. Other DAG declaration options exist -> [link](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html#declaring-a-dag)
+Schedule interval is done daily at 23:00.
+Default arguments can be set in the DAG declaration to be inherited by all operators rather than setting them individually for each operator.
+
+2. `create_flights_table` is a `PostgresOperator` that creates a table - `flights` in our curated Postgress database using a connection ID set in the docker compose. 
+
+3. `process_data` is a `PythonOperator` which loads python support function - `process_and_store_data` in `dags/scripts/flights_utils` which ingests data from the schiphol API, transforms it and stores it in our flights table. 
+
+4. `retrieve_insights` - is a `PythonOperator` which loads python support function - `generate_insights` in `dags/scripts/flights_insights` which generates a summary of delayed flights per destination per gate
+
+5. `send_insights_email` is a `PythonOperator` which encapsulates `EmailOperator` that builds an emails, attaches a csv file of the insights and sends to the recipient emails.
+
+6. Task dependency definition specifying the execution order - ` create_flights_table >> process_data >> retrieve_insights >> send_insights_email`. Branching control flow options exist for conditional flows -> [link](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html#control-flow). 
+
+
+
+### 3. Run DAG in Airflow UI
+Within the Airflow UI, you can manage DAGs, configurations, access documentation and security settings. Below is a screenshot of the trigggered successful DAG run
+
+![](images/successful_dag.png)

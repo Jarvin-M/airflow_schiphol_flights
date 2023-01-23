@@ -47,8 +47,8 @@ with DAG(
     )
 
     # --2. Transform and process data
-    process_data = PythonOperator(
-        task_id="process_data", python_callable=process_and_store_data
+    ingest_n_process_data = PythonOperator(
+        task_id="ingest_n_process_data", python_callable=process_and_store_data
     )
 
     # --3. Generate basic insights
@@ -66,4 +66,4 @@ with DAG(
     )
 
     # --5. Taskflow execution order
-    create_flights_table >> process_data >> retrieve_insights >> send_insights_email
+    create_flights_table >> ingest_n_process_data >> retrieve_insights >> send_insights_email

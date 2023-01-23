@@ -67,7 +67,7 @@ x-airflow-common:
     AIRFLOW__SMTP__SMTP_USER: '<your-email>'
     # have to generate an app password for this to work
     # https://support.google.com/mail/answer/185833?hl=en-GB
-    AIRFLOW__SMTP__SMTP_PASSWORD: '<email-login-token>' 
+    AIRFLOW__SMTP__SMTP_PASSWORD: '<google-app-token>' 
     AIRFLOW__SMTP__SMTP_PORT: 465
     AIRFLOW__SMTP__SMTP_MAIL_FROM: '<your-email>'
   volumes:

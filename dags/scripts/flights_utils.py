@@ -152,7 +152,7 @@ def build_and_send_email(task_instance=None, **context):
         # --3. Construct email and attach csv file with insights
         construct_email = EmailOperator(
             task_id="send_email",
-            to="jmutatiina@deloitte.nl,jzhang5@deloitte.nl",
+            to="<recipient1@email.com>,<recipient2@email.com>",
             subject=f"Summary: Schiphol Flight Delay insights- {todays_date}",
             html_content="""
                 Hi,
